@@ -30,11 +30,7 @@ private:
 
     void send_to_client(const short &msg, const unsigned short &client_socket);
 
-#if defined(_WIN32)
-#define get_socket_error() (WSAGetLastError())
-#else
-#define get_socket_error() (errno)
-#endif
+    int get_socket_error();
 };
 
 #endif

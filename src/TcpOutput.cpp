@@ -105,3 +105,7 @@ void TcpOutput::send_to_client(const short &msg, const unsigned short &client_so
         0
     );
 }
+
+int TcpOutput::get_socket_error() {
+    return errno; // WSAGetLastError() for _WIN32
+}

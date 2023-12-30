@@ -68,13 +68,14 @@ void TcpInput::connect_socket() {
 }
 
 void TcpInput::adjust_connection(unsigned int samp_rate) {
-    auto *in_file_info = new SF_INFO {};
-    in_file_info->samplerate = samp_rate;
-    in_file_info->channels = 1;
-    in_file_info->seekable = 0;
-    in_file_info->format = SF_FORMAT_RAW | SF_FORMAT_PCM_16 | SF_ENDIAN_LITTLE;
+    struct SF_INFO in_file_info;
 
-    this->mp_input_file = sf_open_fd(this->m_socket_fd, SFM_READ, in_file_info, 0);
+    in_file_info.samplerate = samp_rate;
+    in_file_info.channels = 1;
+    in_file_info.seekable = 0;
+    in_file_info.format = SF_FORMAT_RAW | SF_FORMAT_PCM_16 | SF_ENDIAN_LITTLE;
+
+    this->mp_input_file = sf_open_fd(this->m_socket_fd, SFM_READ, &in_file_info, 0);
     if (this->mp_input_file == nullptr) {
         string error_msg = "Error opening TCP input file with with libsndfile, error: \n";
         error_msg += sf_strerror(NULL);
